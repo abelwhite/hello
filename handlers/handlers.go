@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
-	"time"
+
+	"github.com/abelwhite/hello/helpers"
 )
 
 // creating handler function called greeting
@@ -18,13 +18,11 @@ func Home(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-
-	w.Write([]byte("This is my Home page"))
+	helpers.RenderTemplates(w, "./static/html/home.page.tmpl")
 }
 
 func About(w http.ResponseWriter, r *http.Request) {
-	day := time.Now().Weekday()
-	w.Write([]byte(fmt.Sprintf("Have a good %s.", day)))
+
 }
 
 func MessageCreate(w http.ResponseWriter, r *http.Request) {
@@ -34,5 +32,5 @@ func MessageCreate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	w.Write([]byte("Message"))
+
 }
