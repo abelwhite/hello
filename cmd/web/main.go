@@ -4,32 +4,32 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net/http"
-
-	"github.com/abelwhite/hello/handlers"
-	
-
-
 )
 
+// create a new type
+type application struct{}
+
 func main() {
-	//create a multiplexer
-	mux := http.NewServeMux() //multiplexer is to which handler func to call
-	//create a file server
-	//filer server is to 
-	fileServer := http.FileServer(http.Dir("./static/"))
-	mux.Handle("/static/", http.StripPrefix("/static", fileServer)) //remove "resources"
+	//Create a flag for specifing the port number when starting the server
+	addr := flag.String("port", ":4000", "HTTP network address")
+	flag.Parse()
 
-	mux.HandleFunc("/greeting", handlers.Greeting) //provide string and hander
-	mux.HandleFunc("/", handlers.Home)
-	mux.HandleFunc("/about", handlers.About)
-	mux.HandleFunc("/message/create", handlers.MessageCreate)
-	// /home
-	// /about
-	//
+	//create a new instance of the application type
+	app := &application{}
 
-	log.Println("Starting Server on port:4000")
-	err := http.ListenAndServe(":4000", mux)
+
+
+	//create a customized server
+	srv := &http.Server{
+		Addr: *addr,
+		Handler: app.routes(), //we created this routes
+		
+	}
+
+	log.Printf("Starting Server on port %s", *addr)
+	err := srv.ListenAndServe()
 	log.Fatal(err) //should never be reached
 }
