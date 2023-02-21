@@ -26,6 +26,7 @@ func (app *application) About(w http.ResponseWriter, r *http.Request) {
 
 }
 
+//
 func (app *application) MessageCreate(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		//set header

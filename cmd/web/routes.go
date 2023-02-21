@@ -1,3 +1,6 @@
+//filename: routes.go
+//we are using a 3rd aprty router
+//router provides an end poin that the user type in.
 package main
 
 import (
@@ -10,7 +13,7 @@ func (app *application) routes() *httprouter.Router {
 	// create a multiplexer
 	router := httprouter.New() //httprouter from juienschmidft/httprouter
 	// create a file server
-	// filer server is to
+	// filer server needs to be created to show static content
 	fileServer := http.FileServer(http.Dir("./static/"))
 	router.Handler(http.MethodGet, "/static/*filepath", http.StripPrefix("/static", fileServer)) //remove "resources"
 
@@ -20,4 +23,4 @@ func (app *application) routes() *httprouter.Router {
 	router.HandlerFunc(http.MethodPost, "/create", app.MessageCreate)
 
 	return router
-}
+}//router is the data structure to allow us to locate the end points
