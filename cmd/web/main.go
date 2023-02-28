@@ -12,13 +12,16 @@ import (
 	"os"
 	"time"
 
+	"github.com/abelwhite/hello/internal/models"
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
 // create a new type
 // dependancy injection is a way to neatly expose data to all the handler
 // alows data to be shared accroos different handlers(centralized repository)
-type application struct{}
+type application struct {
+	question models.QuestionModel
+}
 
 func main() {
 	//Create a flag for specifing the port number when starting the server
@@ -34,7 +37,9 @@ func main() {
 	}
 
 	//create a new instance of the application type
-	app := &application{}
+	app := &application{
+		question: models.QuestionModel{DB:db}, //has to be of connection pool
+	}
 
 	defer db.Close() //if we dont close the application loop we have memory leak
 	log.Println("Database connection pool established")
